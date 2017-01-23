@@ -2,7 +2,6 @@
 <html>
 <head>
   <title>組字春聯製作器</title>
-  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
@@ -17,7 +16,9 @@
   </nav>
   <div class="container" id="container">
     <div class="row">
-      <blockquote>或許要給一段介紹文字</blockquote>
+      <blockquote>
+        使用說明：<a href="http://ids-testing.wmflabs.org/wiki/Main_Page" target="_blank">http://ids-testing.wmflabs.org/wiki/Main_Page</a>
+      </blockquote>
 
       <!-- show result -->
       <p>檢視結果: </p>
@@ -37,7 +38,7 @@
       </div>
 
       <!-- font selecter -->
-      <div class="input-field col s12">
+      <div class="input-field col s6">
         <select name="font" v-model="font">
           <option>楷體</option>
         </select>
@@ -45,25 +46,47 @@
       </div>
 
       <!-- type selecter -->
-      <div class="input-field col s12">
+      <div class="input-field col s6">
         <select name="type" v-model="types">
-          <option>svg</option>
+          <option>png</option>
         </select>
         <label>格式</label>
       </div>
     </div>
 
-    <!-- TODO: change link -->
-    <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&layout=button&size=large&mobile_iframe=true&width=64&height=28&appId" width="64" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
-
   </div>
   <main></main>
 
+  <div id="info" class="modal bottom-sheet">
+    <div class="modal-content">
+      <h5>About</h5><br>
+      <h6>字體授權：</h6>
+      <blockquote>CNS11643 全字庫
+        <li><a href="http://data.gov.tw/node/5961" target="_blank">中華民國國家發展委員會</a> 提供</li>
+        <li>授權：<a href="http://data.gov.tw/license" target="_blank">政府資料開放授權條款 - 第 1 版</a>，相容「 創用 CC 授權 姓名標示 4.0 國際版本 」</li>
+      </blockquote>
+      <blockquote><a href="http://cdp.sinica.edu.tw/cdphanzi/declare.htm" target="_blank">「中央研究院漢字部件檢字系統」2.65 版釋出聲明</a></blockquote>
+    </div>
+  </div>
+
   <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col l12 s12">
+          <!-- FB -->
+          <iframe src="https://www.facebook.com/plugins/share_button.php?href=http://elleyyu.github.io/spring_festival_couplets/&layout=button&size=large&mobile_iframe=true&width=64&height=28&appId" width="64" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+          <!-- Twitter -->
+          <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://elleyyu.github.io/spring_festival_couplets/" data-show-count="false" data-size="large">Tweet</a><script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+      </div>
+    </div>
     <div class="footer-copyright">
       <div class="container">
       © 2017 Copyright
-      <a class="grey-text text-lighten-4 right" href="https://github.com/elleyyu">Contact me</a>
+        <div class="right">
+          <a class="grey-text text-lighten-4" href="#info">About</a>　
+          <a class="grey-text text-lighten-4" href="https://github.com/elleyyu">Contact me</a>
+        </div>
       </div>
     </div>
   </footer>
@@ -78,7 +101,7 @@
         request_string: '⿴辶⿴宀⿱珤⿰隹⿰貝招',
         characters: ['⿰', '⿱', '⿲', '⿳', '⿴', '⿵', '⿶', '⿷', '⿸', '⿹', '⿺'],
         font: '楷體',
-        types: 'svg',
+        types: 'png',
       };
     },
 
@@ -92,14 +115,22 @@
     methods: {
       addCh(ch) {
         this.request_string += ch;
-      }
+      },
     },
 
     mounted() {
       $('select').material_select();
+
+      $('.modal').modal({
+        dismissible: true,
+        opacity: .5,
+        in_duration: 300,
+        out_duration: 200,
+        starting_top: '4%',
+        ending_top: '10%',
+      });
     },
   });
-
 </script>
 
 <style type="text/css">
