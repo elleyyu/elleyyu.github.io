@@ -5,11 +5,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
 
   <meta property="og:title" content="組字春聯製作器">
   <meta property="og:url" content="http://elleyyu.github.io/spring_festival_couplets/">
-  <meta property="og:image" content="http://tools.wmflabs.org/idsgen/%E2%BF%B4%E8%BE%B6%E2%BF%B4%E5%AE%80%E2%BF%B1%E7%8F%A4%E2%BF%B0%E9%9A%B9%E2%BF%B0%E8%B2%9D%E6%8B%9B.png?%E5%AD%97%E9%AB%94=%E6%A5%B7%E9%AB%94"/>
+  <meta property="og:image" content="http://elleyyu.github.io/spring_festival_couplets/example.png"/>
 </head>
 
 <body>
@@ -22,14 +22,13 @@
     <div class="row">
       <blockquote>
         使用說明：<a href="http://ids-testing.wmflabs.org/wiki/Main_Page" target="_blank">http://ids-testing.wmflabs.org/wiki/Main_Page</a>
+        <br>結果圖片可右鍵儲存喔！
       </blockquote>
 
       <!-- show result -->
       <p>檢視結果: </p>
       <div class="s12 center" style="margin-bottom: 2em;">
-        <div class="red" style="display: inline-block; transform: rotate(45deg); padding: 5px;">
-          <img :src="imgUrl" style="transform: rotate(-45deg); padding-right: 5px;">
-        </div>
+        <canvas id="cnv" :src="imgUrl"></canvas>
       </div>
 
       <!-- input string-->
@@ -112,13 +111,34 @@
     computed: {
       imgUrl() {
         const q = this.request_string, font = this.font, type = this.types;
-        return `http://tools.wmflabs.org/idsgen/${q}.${type}?字體=${font}`;
+        const url = `http://tools.wmflabs.org/idsgen/${q}.${type}?字體=${font}`;
+        this.draw(url);
+        return url;
       },
     },
 
     methods: {
       addCh(ch) {
         this.request_string += ch;
+      },
+
+      draw(url) {
+        let canvas = document.getElementById('cnv');
+        let ctx = canvas.getContext('2d');
+        canvas.width = 320;
+        canvas.height = 320;
+        ctx.beginPath();
+        ctx.fillStyle = '#f44336';
+        ctx.save();
+        ctx.rotate(45*Math.PI/180);
+        ctx.fillRect(113, -113, 220, 220);
+        let img = new Image();
+        img.onload = function () {
+          ctx.drawImage(img, 55, 50);
+        }
+        img.src = url;
+        ctx.restore();
+        ctx.stroke();
       },
     },
 
@@ -133,6 +153,8 @@
         starting_top: '4%',
         ending_top: '10%',
       });
+
+      this.draw(this.imgUrl);
     },
   });
 </script>
